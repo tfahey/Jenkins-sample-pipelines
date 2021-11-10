@@ -44,10 +44,10 @@ pipeline {
                     }
                     else {
                         bat '''
-                          echo "Hello Windows! ^
+                          echo Hello Windows! ^
                             This is ^
                             a long string ^
-                            to echo"
+                            to echo
                         '''
                     }
                 }
