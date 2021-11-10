@@ -2,6 +2,25 @@ pipeline {
     agent any
 
     stages {
+        stage ('environment verify') {
+            steps {
+                script {
+                    if (isUnix() == true) {
+                        sh '''
+                            pwd
+                            ls -la
+                            echo $PATH
+                        '''
+                    }
+                    else {
+                        bat '''
+                            dir'
+                            echo %PATH%
+                        '''
+                    }
+                }
+            }
+        }
         stage('Hello') {
             steps {
                 echo 'Hello World'
