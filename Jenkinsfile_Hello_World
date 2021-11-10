@@ -33,7 +33,14 @@ pipeline {
         }
         stage('sh Hello') {
             steps {
-                sh 'echo "Hello shell!"'
+                script {
+                    if (isUnix() == true) {
+                        sh 'echo "Hello UNIX!"'
+                    }
+                    else {
+                        bat 'echo "Hello Windows!"'
+                    }
+                }
             }
         }
     }
