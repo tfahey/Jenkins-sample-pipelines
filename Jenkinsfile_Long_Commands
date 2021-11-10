@@ -1,0 +1,57 @@
+pipeline {
+    agent any
+
+    stages {
+        stage ('environment verify') {
+            steps {
+                script {
+                    if (isUnix() == true) {
+                        sh '''
+                            pwd
+                            ls -la
+                            echo $PATH
+                        '''
+                    }
+                    else {
+                        bat '''
+                            dir /a
+                            echo %PATH%
+                        '''
+                    }
+                }
+            }
+        }
+        stage('Hello') {
+            steps {
+                echo 'Hello World'
+            }
+        }
+        stage('Goodbye') {
+            steps {
+                echo 'Goodbye World'
+            }
+        }
+        stage('Long Commands') {
+            steps {
+                script {
+                    if (isUnix() == true) {
+                        sh '''
+                          echo "Hello UNIX! \
+                            This is \
+                            a long string \
+                            to echo"
+                        '''
+                    }
+                    else {
+                        bat '''
+                          echo "Hello Windows! ^
+                            This is ^
+                            a long string ^
+                            to echo"
+                        '''
+                    }
+                }
+            }
+        }
+    }
+}
