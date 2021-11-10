@@ -36,10 +36,10 @@ pipeline {
                 script {
                     if (isUnix() == true) {
                         sh '''
-                          echo "Hello UNIX! \
+                          echo Hello UNIX! \
                             This is \
                             a long string \
-                            to echo"
+                            to echo
                         '''
                     }
                     else {
