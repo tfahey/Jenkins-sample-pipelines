@@ -1,0 +1,59 @@
+pipeline {
+    agent any
+
+    stages {
+        stage ('environment verify') {
+            steps {
+                script {
+                    if (isUnix() == true) {
+                        sh '''
+                            pwd
+                            ls -la
+                            echo $PATH
+                        '''
+                    }
+                    else {
+                        bat '''
+                            dir /a
+                            echo %PATH%
+                        '''
+                    }
+                }
+            }
+        }
+        stage('Hello') {
+            steps {
+                echo 'Hello World'
+            }
+        }
+        stage('Goodbye') {
+            steps {
+                echo 'Goodbye World'
+            }
+        }
+        stage('Colorized Commands') {
+            steps {
+                script {
+                                if(isUnix() == true) {
+                                    YELLOW='\033[1;33m'
+                                    NC='\033[0m'
+                                    sh '''
+                                       set +x -v
+                                       curl -sSL https://download.sourceclear.com/ci.sh | sh | tee scaagent-results.txt
+                                       echo "[INFO] Checking for Medium Risk Libraries"
+                                          scan_status=$(cat scaagent-results.txt)
+                                          if [[ $scan_status =*"Medium Risk"* ]];
+                                          then 
+                                                echo -e "${YELLOW}MEDIUM RISKS DETECTED${NC}"                                                
+                                                head -28 && grep -hnr 'Medium Risk' scaagent-results.txt
+                                          else
+                                          echo "No Medium Risks Detected"
+                                          fi
+                                         set -x +v
+                                       '''
+                                    // debug, no upload
+                                    //sh "curl -sSL https://download.sourceclear.com/ci.sh | DEBUG=1 sh -s -- scan --no-upload"
+                                }
+                }
+            }
+        }
