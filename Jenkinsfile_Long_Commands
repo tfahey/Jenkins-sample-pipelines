@@ -31,25 +31,17 @@ pipeline {
                 echo 'Goodbye World'
             }
         }
-        stage('Long Commands') {
+        stage('Colorized Commands') {
             steps {
                 script {
-                    if (isUnix() == true) {
-                        sh '''
-                          echo Hello UNIX! \
-                            This is \
-                            a long string \
-                            to echo
-                        '''
-                    }
-                    else {
-                        bat '''
-                          echo Hello Windows! ^
-                            This is ^
-                            a long string ^
-                            to echo
-                        '''
-                    }
+                                if(isUnix() == true) {
+                                    YELLOW='\033[1;33m'
+                                    NC='\033[0m'
+                                    sh '''
+                                       echo "[INFO] Checking for Medium Risk Libraries"
+                                       echo -e "${YELLOW}MEDIUM RISKS DETECTED${NC}"                                                
+                                       '''
+                                }
                 }
             }
         }
